@@ -1,0 +1,19 @@
+% latex table generated in R 4.6.1 by xtable 1.8-8 package
+% Thu Oct 15 12:15:12 2026
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllrrrrrrrrlrrl}
+  \toprule
+operation & payload & test & n\_json & n\_orjson & median\_json & median\_orjson & rel\_diff\_pct & ratio\_json\_over\_orjson & p & cliffs\_delta & cliff\_magnitude & cohens\_d & p\_adj & significant \\ 
+  \midrule
+dumps & simple & Mann-Whitney U &    30 &    30 & 0.0003 & 0.0000 & -92.9335 & 14.1513 & 0.0000 & 1.0000 & large & 312.4698 & 0.0000 & TRUE \\ 
+  dumps & moderate & Mann-Whitney U &    30 &    30 & 0.0006 & 0.0001 & -90.5147 & 10.5426 & 0.0000 & 1.0000 & large & 86.7606 & 0.0000 & TRUE \\ 
+  dumps & complex & Mann-Whitney U &    30 &    30 & 0.0006 & 0.0001 & -87.3810 & 7.9246 & 0.0000 & 1.0000 & large & 167.3242 & 0.0000 & TRUE \\ 
+  loads & simple & Mann-Whitney U &    30 &    30 & 0.0003 & 0.0001 & -66.3235 & 2.9694 & 0.0000 & 1.0000 & large & 62.6115 & 0.0000 & TRUE \\ 
+  loads & moderate & Mann-Whitney U &    30 &    30 & 0.0005 & 0.0002 & -49.1098 & 1.9650 & 0.0000 & 1.0000 & large & 60.4649 & 0.0000 & TRUE \\ 
+  loads & complex & Mann-Whitney U &    30 &    30 & 0.0006 & 0.0004 & -29.4000 & 1.4164 & 0.0000 & 1.0000 & large & 17.5559 & 0.0000 & TRUE \\ 
+   \bottomrule
+\end{tabular}
+\caption{RQ1 per complexity level: json vs orjson energy efficiency (BH-adjusted p-values)} 
+\label{tab:rq1_pairwise}
+\end{table}
