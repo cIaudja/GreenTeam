@@ -101,12 +101,30 @@ def _interp(ts, vals, t):
     return va if tb == ta else va + (vb - va) * (t - ta) / (tb - ta)
 
 
+RAPL_WRAP_J = 262144.0  # RAPL counters are 32 bit: they overflow at 2^32 * 61.035 uJ = 2^18 J
+
+
+def unwrap_counter(vals):
+    """Make a cumulative RAPL counter monotonic: after an overflow the counter restarts
+    from ~0, so every drop is compensated by adding RAPL_WRAP_J to all later samples."""
+    out, offset, prev = [], 0.0, None
+    for v in vals:
+        if prev is not None and not math.isnan(v) and not math.isnan(prev) and v < prev:
+            offset += RAPL_WRAP_J
+        out.append(v + offset)
+        if not math.isnan(v):
+            prev = v
+    return out
+
+
 def window_energy(cols, t0, t1):
     ts = cols[TIME_COL]
-    e = _interp(ts, cols[PKG_COL], t1) - _interp(ts, cols[PKG_COL], t0)
+    pkg = unwrap_counter(cols[PKG_COL])
+    e = _interp(ts, pkg, t1) - _interp(ts, pkg, t0)
     dram = cols.get(DRAM_COL)
     dram_used = bool(dram) and not any(math.isnan(v) for v in dram) and max(dram) > 0
     if dram_used:
+        dram = unwrap_counter(dram)
         e += _interp(ts, dram, t1) - _interp(ts, dram, t0)
     if e < 0:
         raise ValueError("negative energy (RAPL counter wrap?) - re-run this run")
