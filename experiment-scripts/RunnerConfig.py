@@ -75,6 +75,8 @@ MEM_COL = "USED_MEMORY"                # bytes
 
 DATA_COLUMNS = ["execution_time_s", "cpu_utilisation_pct", "peak_memory_bytes", "energy_J",
                 "idle_power_W"]  # idle_power_W: supporting measure (mean power, last IDLE_SAMPLE_S of cool-down)
+if BLOCK == "real-world":        # RQ2.1: peak RSS of the benchmark process (see benchmark.py)
+    DATA_COLUMNS = DATA_COLUMNS + ["peak_rss_bytes"]
 
 
 # ----------------------------------------------------- EnergiBridge logs -----
@@ -298,9 +300,12 @@ class RunnerConfig:
         t0, t1 = bench["start_time_ms"], bench["end_time_ms"]
         energy, _ = window_energy(cols, t0, t1)
         cpu, peak_mem = window_cpu_and_memory(cols, t0, t1)
-        return {"execution_time_s": bench["execution_time_s"], "cpu_utilisation_pct": cpu,
-                "peak_memory_bytes": peak_mem, "energy_J": energy,
-                "idle_power_W": self._p_idle}
+        row = {"execution_time_s": bench["execution_time_s"], "cpu_utilisation_pct": cpu,
+               "peak_memory_bytes": peak_mem, "energy_J": energy,
+               "idle_power_W": self._p_idle}
+        if BLOCK == "real-world":  # peak RSS of the process minus its baseline before the payload load
+            row["peak_rss_bytes"] = bench["maxrss_after_bytes"] - bench["maxrss_start_bytes"]
+        return row
 
     def after_experiment(self):
         pass

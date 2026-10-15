@@ -20,6 +20,7 @@ s (bytes per operation) = length of the serialised output for dumps,
 """
 import argparse
 import json
+import resource
 import sys
 import time
 from itertools import repeat
@@ -44,6 +45,11 @@ OPERATIONS = {
 }
 
 
+def maxrss_bytes() -> int:
+    """Peak RSS (high-water mark) of THIS process; ru_maxrss is KiB on Linux, bytes on macOS."""
+    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * (1 if sys.platform == "darwin" else 1024)
+
+
 def ceil_div(a: int, b: int) -> int:
     return -(-a // b)
 
@@ -65,6 +71,7 @@ def main() -> int:
     args = ap.parse_args()
 
     fn = OPERATIONS[(args.library, args.operation)]
+    rss_start = maxrss_bytes()   # interpreter + imports, before the payload is loaded
 
     # ---- setup (not measured) -------------------------------------------
     raw = args.payload_file.read_bytes()
@@ -87,11 +94,13 @@ def main() -> int:
     time.sleep(PRE_WINDOW_PAUSE_S)
 
     # ---- measurement window ---------------------------------------------
+    rss_before = maxrss_bytes()
     start_ns = time.time_ns()
     t0 = time.perf_counter()
     run_loop(fn, arg, iterations)
     t1 = time.perf_counter()
     end_ns = time.time_ns()
+    rss_after = maxrss_bytes()
     # ----------------------------------------------------------------------
 
     args.result_file.write_text(json.dumps({
@@ -105,6 +114,9 @@ def main() -> int:
         "start_time_ms": start_ns / 1e6,   # epoch ms, same clock as EnergiBridge "Time"
         "end_time_ms": end_ns / 1e6,
         "execution_time_s": t1 - t0,
+        "maxrss_start_bytes": rss_start,
+        "maxrss_before_bytes": rss_before,
+        "maxrss_after_bytes": rss_after,
     }, indent=2))
 
     time.sleep(POST_WINDOW_PAUSE_S)
