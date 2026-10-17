@@ -6,6 +6,12 @@ Run on gl3, inside tmux, from the project root:
     EXPERIMENT_BLOCK=real-world python3 <path-to>/experiment-runner/experiment-runner/ experiment-scripts/RunnerConfig.py
 Add DRY_RUN=1 for a ~2 minute smoke test (4 runs, small volume, separate results folder).
 
+Batches (one per booked 12 h slot): add BATCH=<k> (and optionally BATCHES=<n>, default 3) to run
+only the k-th contiguous slice of the pre-generated order, e.g. the real-world block in 3 slots:
+    BATCH=1 EXPERIMENT_BLOCK=real-world python3 ... experiment-scripts/RunnerConfig.py
+Every batch has its own results folder (results/json_energy_real_world_batch1of3/, ...). If a slot
+ends early, run the SAME command again in the next slot: unfinished runs are still TODO and resume.
+
 The pre-generated run table (run-tables/run_table_<block>.csv) fixes the order of the runs.
 """
 import csv
@@ -33,6 +39,10 @@ BLOCK = os.environ.get("EXPERIMENT_BLOCK")
 if BLOCK not in ("synthetic", "real-world"):
     raise RuntimeError("Set EXPERIMENT_BLOCK=synthetic or EXPERIMENT_BLOCK=real-world")
 DRY_RUN = os.environ.get("DRY_RUN") == "1"
+BATCHES = int(os.environ.get("BATCHES", "3"))
+BATCH = int(os.environ["BATCH"]) if os.environ.get("BATCH") and not DRY_RUN else None
+if BATCH is not None and not 1 <= BATCH <= BATCHES:
+    raise RuntimeError(f"BATCH must be between 1 and BATCHES={BATCHES}")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
@@ -148,7 +158,8 @@ def window_cpu_and_memory(cols, t0, t1):
 # ------------------------------------------------------------- config -------
 class RunnerConfig:
     ROOT_DIR = SCRIPT_DIR
-    name = f"json_energy_{BLOCK.replace('-', '_')}" + ("_dry" if DRY_RUN else "")
+    name = (f"json_energy_{BLOCK.replace('-', '_')}"
+            + (f"_batch{BATCH}of{BATCHES}" if BATCH else "") + ("_dry" if DRY_RUN else ""))
     results_output_path = PROJECT_ROOT / "results"
     operation_type = OperationType.AUTO
     time_between_runs_in_ms = 0        # the cool-down happens inside start_run
@@ -203,6 +214,11 @@ class RunnerConfig:
             for r in rows:
                 first.setdefault((r["library"], r["operation"]), r)
             rows = list(first.values())
+        elif BATCH is not None:      # contiguous slice of the randomised order
+            lo, hi = (BATCH - 1) * len(rows) // BATCHES, BATCH * len(rows) // BATCHES
+            rows = rows[lo:hi]
+            print(f"[batch] {BATCH}/{BATCHES}: runs {lo + 1}-{hi} of {EXPECTED_RUNS}, "
+                  f"{len(rows)} runs, results in results/{self.name}/")
         return rows
 
     # ---- setup phase (plan 5.3) -------------------------------------------
