@@ -1,0 +1,15 @@
+{
+  "library": "orjson",
+  "operation": "loads",
+  "payload_file": "/home/gl_greenteam/greenteam/data/real-world-payloads/canada.json",
+  "volume_bytes": 7878710000,
+  "bytes_per_op": 2251060,
+  "iterations": 3500,
+  "warmup_iterations": 35,
+  "start_time_ms": 1792126539249.2363,
+  "end_time_ms": 1792126588524.6519,
+  "execution_time_s": 49.27541189547628,
+  "maxrss_start_bytes": 15527936,
+  "maxrss_before_bytes": 31465472,
+  "maxrss_after_bytes": 31465472
+}

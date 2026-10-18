@@ -1,0 +1,15 @@
+{
+  "library": "orjson",
+  "operation": "loads",
+  "payload_file": "/home/gl_greenteam/greenteam/data/real-world-payloads/twitter.json",
+  "volume_bytes": 28418130000,
+  "bytes_per_op": 631514,
+  "iterations": 45000,
+  "warmup_iterations": 450,
+  "start_time_ms": 1792080544235.551,
+  "end_time_ms": 1792080627559.7112,
+  "execution_time_s": 83.32415755558759,
+  "maxrss_start_bytes": 15699968,
+  "maxrss_before_bytes": 18591744,
+  "maxrss_after_bytes": 18591744
+}
