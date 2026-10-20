@@ -28,7 +28,7 @@
 # =============================================================================
 
 # ---- packages ---------------------------------------------------------------
-needed <- c("tidyverse", "xtable")
+needed <- c("tidyverse", "xtable", "scales")
 missing <- needed[!needed %in% rownames(installed.packages())]
 if (length(missing) > 0) install.packages(missing, repos = "https://cloud.r-project.org")
 
@@ -89,6 +89,29 @@ if (nrow(dat) != 480 || any(per_config$n != 30)) {
   warning("Expected 480 runs, 30 per configuration - check the input:\n",
           paste(capture.output(print(per_config %>% filter(n != 30))), collapse = "\n"))
 }
+
+# When each run was executed (start of its measurement window, from benchmark.json),
+# used to look for time patterns in the outliers (root-cause analysis, Section 4.5).
+batch_dir <- function(b) {
+  d <- list.files("results", pattern = paste0("^json_energy_real_world_batch", b, "of[0-9]+$"),
+                  full.names = TRUE)
+  if (length(d) != 1) NA_character_ else d
+}
+read_start_ms <- function(run_id, b) {
+  f <- file.path(batch_dir(b), run_id, "benchmark.json")
+  if (is.na(f) || !file.exists(f)) return(NA_real_)
+  as.numeric(sub(".*\"start_time_ms\"\\s*:\\s*([0-9.eE+-]+).*", "\\1",
+                 paste(readLines(f, warn = FALSE), collapse = " ")))
+}
+dat <- dat %>%
+  mutate(start_ms = map2_dbl(run_id, batch, read_start_ms)) %>%
+  group_by(batch) %>%
+  mutate(hours_into_batch = (start_ms - min(start_ms, na.rm = TRUE)) / 3.6e6,
+         position_in_batch = rank(start_ms, ties.method = "first", na.last = "keep")) %>%
+  ungroup()
+if (any(is.na(dat$start_ms))) {
+  warning(sum(is.na(dat$start_ms)), " runs without benchmark.json: the time plot will skip them")
+}
 write_csv(dat, file.path(OUT, "processed", "realworld_clean.csv"))
 
 # ---- 2. anomalies and outliers (kept, Section 4.5) --------------------------
@@ -109,6 +132,28 @@ cat("\nOutliers (1.5 x IQR), per measure and configuration - kept in the analysi
 print(outlier_counts, n = Inf)
 write_csv(outlier_counts, file.path(OUT, "tables", "rw_outliers.csv"))
 
+# Every flagged run, with when it ran and how far it lies from its configuration's median
+outlier_runs <- outliers %>%
+  group_by(measure, operation, payload, library) %>%
+  mutate(deviation_pct = 100 * (value / median(value) - 1)) %>%
+  ungroup() %>%
+  filter(outlier) %>%
+  select(measure, operation, payload, library, run_id, batch, position_in_batch,
+         hours_into_batch, value, deviation_pct) %>%
+  arrange(measure, batch, position_in_batch)
+write_csv(outlier_runs, file.path(OUT, "tables", "rw_outlier_runs.csv"))
+
+# Where in the batches do the energy outliers occur? Under no time effect, about 10% of
+# them would fall in the first 10% of a batch.
+energy_outlier_timing <- outlier_runs %>%
+  filter(measure == "E") %>%
+  left_join(count(dat, batch, name = "runs_in_batch"), by = "batch") %>%
+  summarise(energy_outliers = n(),
+            in_first_10pct_of_batch = sum(position_in_batch <= 0.1 * runs_in_batch, na.rm = TRUE),
+            per_batch = paste(table(factor(batch, levels = sort(unique(dat$batch)))), collapse = " / "))
+cat("\nEnergy outliers: total, in the first 10% of their batch, per batch (1 / 2 / 3):\n")
+print(energy_outlier_timing)
+
 # ---- 3. descriptive statistics ----------------------------------------------
 describe <- function(x) c(mean = mean(x), median = median(x), sd = sd(x), iqr = IQR(x),
                           min = min(x), max = max(x), cv = sd(x) / mean(x))
@@ -124,7 +169,13 @@ for (m in names(MEASURES)) {
 }
 
 # ---- 4. exploration plots ---------------------------------------------------
-theme_set(theme_bw(base_size = 11))
+# Figures are saved at their printed size in the two-column ACM layout (full width = 7 in,
+# one column = 3.33 in), so the fonts appear at their real size and need no scaling in LaTeX.
+FULL_W <- 7; COL_W <- 3.33
+# Strip labels name only the operation and payload; the library is shown by the colour
+# (legend on top), which keeps the labels short enough for the narrow panels.
+op_payload_labeller <- function(labels) list(paste(labels$operation, labels$payload))
+theme_set(theme_bw(base_size = 8) + theme(plot.margin = margin(2, 4, 2, 2)))
 lib_colours <- c(json = "#1b9e77", orjson = "#d95f02")
 op_labels <- c(dumps = "Serialisation (dumps)", loads = "Deserialisation (loads)")
 
@@ -136,8 +187,48 @@ for (m in names(MEASURES)) {
                labeller = labeller(operation = op_labels)) +
     scale_fill_manual(values = lib_colours, guide = "none") +
     labs(x = "Library", y = MEASURES[m])
-  ggsave(file.path(OUT, "figures", paste0("rw_violin_", m, ".pdf")), p, width = 9, height = 5)
+  ggsave(file.path(OUT, "figures", paste0("rw_violin_", m, ".pdf")), p, width = FULL_W, height = 3)
 }
+
+# Box plots, one panel per configuration AND library with its own y axis: the runs of one
+# configuration vary by about 1%, while the libraries differ by 2-20x, so on a shared axis
+# the boxes collapse into lines. Whiskers end at 1.5 x IQR, the outlier rule of Section 4.5,
+# so every point drawn beyond them is a flagged run.
+for (m in names(MEASURES)) {
+  p <- ggplot(filter(long, measure == m), aes(x = library, y = value, fill = library)) +
+    geom_boxplot(width = 0.5, outlier.colour = "red", outlier.size = 1.2, alpha = 0.6, coef = 1.5) +
+    facet_wrap(~ operation + payload + library, scales = "free", nrow = 2,
+               labeller = op_payload_labeller) +
+    scale_fill_manual(values = lib_colours, name = "Library") +
+    labs(x = NULL, y = MEASURES[m]) +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+          legend.position = "top", legend.margin = margin(0, 0, 0, 0),
+          legend.box.margin = margin(0, 0, -6, 0), legend.key.size = unit(8, "pt"),
+          axis.text.y = element_text(size = 5.5), strip.text = element_text(size = 5.5),
+          panel.spacing = unit(2, "pt"))
+  ggsave(file.path(OUT, "figures", paste0("rw_boxplot_", m, ".pdf")), p, width = FULL_W, height = 2.4)
+}
+
+# Energy over the course of each batch: deviation of every run from its configuration's
+# median, against the time the run started. Clusters of outliers (e.g. at the start of a
+# batch, or in one batch only) point to a disturbance; random scatter points to noise.
+p_time <- outliers %>%
+  filter(measure == "E") %>%
+  group_by(operation, payload, library) %>%
+  mutate(deviation_pct = 100 * (value / median(value) - 1)) %>%
+  ungroup() %>%
+  filter(!is.na(hours_into_batch)) %>%
+  ggplot(aes(x = hours_into_batch, y = deviation_pct, colour = outlier, shape = library)) +
+  geom_hline(yintercept = 0, colour = "grey60") +
+  geom_point(size = 1.3, alpha = 0.8) +
+  facet_wrap(~ batch, nrow = 1, labeller = labeller(batch = function(b) paste("Batch", b))) +
+  scale_colour_manual(values = c(`FALSE` = "grey40", `TRUE` = "red"),
+                      labels = c(`FALSE` = "regular run", `TRUE` = "outlier (1.5 x IQR)")) +
+  labs(x = "Hours since the start of the batch", y = "Energy deviation from\nconfiguration median (%)",
+       colour = NULL, shape = "Library") +
+  theme(legend.position = "bottom", legend.box = "vertical", legend.margin = margin(0, 0, 0, 0),
+        legend.spacing.y = unit(0, "pt"), axis.title.y = element_text(size = 7))
+ggsave(file.path(OUT, "figures", "rw_energy_over_time.pdf"), p_time, width = COL_W, height = 2.8)
 
 # Scatter plots E vs each performance measure (RQ2.1-RQ2.3), one panel per configuration
 for (x in names(PERF)) {
@@ -145,11 +236,15 @@ for (x in names(PERF)) {
     geom_point(size = 1, alpha = 0.7) +
     geom_smooth(method = "lm", formula = y ~ x, se = FALSE, linewidth = 0.5) +
     facet_wrap(~ operation + payload + library, scales = "free", nrow = 2,
-               labeller = labeller(.multi_line = FALSE)) +
-    scale_colour_manual(values = lib_colours, guide = "none") +
-    labs(x = MEASURES[x], y = MEASURES["E"], title = paste0(PERF[x], ": energy vs ", MEASURES[x])) +
-    theme(axis.text = element_text(size = 6), strip.text = element_text(size = 7))
-  ggsave(file.path(OUT, "figures", paste0("rq2_scatter_E_", x, ".pdf")), p, width = 12, height = 5)
+               labeller = op_payload_labeller) +
+    scale_colour_manual(values = lib_colours, name = "Library") +
+    scale_x_continuous(breaks = scales::breaks_extended(n = 3), guide = guide_axis(check.overlap = TRUE)) +
+    labs(x = MEASURES[x], y = MEASURES["E"]) +   # the figure caption carries the title
+    theme(legend.position = "top", legend.margin = margin(0, 0, 0, 0),
+          legend.box.margin = margin(0, 0, -6, 0), legend.key.size = unit(8, "pt"),
+          axis.text = element_text(size = 4.5), strip.text = element_text(size = 5.5),
+          panel.spacing = unit(2, "pt"))
+  ggsave(file.path(OUT, "figures", paste0("rq2_scatter_E_", x, ".pdf")), p, width = FULL_W, height = 2.6)
 }
 
 # ---- 5. normality and homogeneity of variance --------------------------------
