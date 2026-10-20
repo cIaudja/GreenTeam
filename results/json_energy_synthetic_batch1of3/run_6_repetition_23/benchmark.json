@@ -1,0 +1,15 @@
+{
+  "library": "orjson",
+  "operation": "dumps",
+  "payload_file": "/home/gl_greenteam/greenteam/data/synthetic-payloads/simple.json",
+  "volume_bytes": 30000003264,
+  "bytes_per_op": 9803,
+  "iterations": 3060288,
+  "warmup_iterations": 30603,
+  "start_time_ms": 1792519092972.385,
+  "end_time_ms": 1792519104774.541,
+  "execution_time_s": 11.802153582684696,
+  "maxrss_start_bytes": 15749120,
+  "maxrss_before_bytes": 15749120,
+  "maxrss_after_bytes": 15749120
+}
