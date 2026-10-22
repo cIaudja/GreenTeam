@@ -179,6 +179,7 @@ class RunnerConfig:
         ])
         self._proc = self._log = self._p_idle = None
         self._pregenerated_rows = self._load_pregenerated_table()
+        self.run_table_model = self.create_run_table_model()
 
     # ---- run table ------------------------------------------------------
     def create_run_table_model(self):
