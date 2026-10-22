@@ -1,0 +1,19 @@
+% latex table generated in R 4.6.1 by xtable 1.8-8 package
+% Thu Oct 22 19:40:03 2026
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllllrrrrrlrlrl}
+  \toprule
+analysis & response & operation & payload & test & median\_json & median\_orjson & rel\_diff\_pct & ratio\_json\_over\_orjson & p & effect\_type & effect\_size & effect\_magnitude & p\_adj & significant \\ 
+  \midrule
+RQ1\_1\_efficiency & efficiency\_J\_per\_KB & dumps & simple & Mann-Whitney U & 0.0003 & 0.0000 & -92.8980 & 14.0805 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_1\_efficiency & efficiency\_J\_per\_KB & dumps & moderate & Mann-Whitney U & 0.0006 & 0.0001 & -90.5452 & 10.5766 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_1\_efficiency & efficiency\_J\_per\_KB & dumps & complex & Mann-Whitney U & 0.0006 & 0.0001 & -87.3956 & 7.9338 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_1\_efficiency & efficiency\_J\_per\_KB & loads & simple & Mann-Whitney U & 0.0002 & 0.0001 & -66.2741 & 2.9651 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_1\_efficiency & efficiency\_J\_per\_KB & loads & moderate & Mann-Whitney U & 0.0005 & 0.0002 & -48.5937 & 1.9453 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_1\_efficiency & efficiency\_J\_per\_KB & loads & complex & Mann-Whitney U & 0.0006 & 0.0005 & -29.0941 & 1.4103 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+   \bottomrule
+\end{tabular}
+\caption{Pairwise json vs orjson comparisons by payload for energy efficiency (BH-adjusted p-values)} 
+\label{tab:RQ1_1_efficiency_pairwise}
+\end{table}

@@ -576,6 +576,8 @@ main <- function() {
   plot_distributions(dat)
   plot_qq(dat)
   assumptions <- check_assumptions(dat)
+
+  
   approach <- choose_approach(assumptions)
   res <- test_rq1(dat, approach)
   plot_interaction(dat)
