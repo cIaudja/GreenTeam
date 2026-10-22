@@ -1,0 +1,23 @@
+
+Received Ctrl+C, stopping...
+Traceback (most recent call last):
+  File "/home/gl_greenteam/greenteam/experiment-scripts/benchmark.py", line 127, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/gl_greenteam/greenteam/experiment-scripts/benchmark.py", line 100, in main
+    run_loop(fn, arg, iterations)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gl_greenteam/greenteam/experiment-scripts/benchmark.py", line 59, in run_loop
+    fn(arg)
+    ~~^^^^^
+  File "/usr/local/lib/python3.13/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.13/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/json/decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+KeyboardInterrupt
+Energy consumption in joules: 5876.175964355469 for 178.92442 sec of execution.

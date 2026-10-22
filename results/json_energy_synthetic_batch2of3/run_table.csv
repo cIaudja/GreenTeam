@@ -89,20 +89,20 @@ run_8_repetition_9,DONE,orjson,dumps,complex,46.043672589585185,99.6338672720867
 run_5_repetition_12,DONE,json,loads,complex,379.89942406862974,99.95563196658586,45510656.0,19111.887752890078,14.459769518758744
 run_9_repetition_15,DONE,orjson,loads,simple,52.207506955601275,99.78927203065135,0.0,2562.334956473118,14.43276531118855
 run_2_repetition_12,DONE,json,dumps,complex,378.18705367296934,100.0,8511488.0,18859.151619854412,14.437156329623802
-run_2_repetition_22,TODO,json,dumps,complex, , , , , 
-run_11_repetition_25,TODO,orjson,loads,complex, , , , , 
-run_3_repetition_19,TODO,json,loads,simple, , , , , 
-run_4_repetition_10,TODO,json,loads,moderate, , , , , 
-run_10_repetition_7,TODO,orjson,loads,moderate, , , , , 
-run_5_repetition_19,TODO,json,loads,complex, , , , , 
-run_6_repetition_28,TODO,orjson,dumps,simple, , , , , 
-run_7_repetition_14,TODO,orjson,dumps,moderate, , , , , 
-run_5_repetition_1,TODO,json,loads,complex, , , , , 
-run_4_repetition_2,TODO,json,loads,moderate, , , , , 
-run_11_repetition_10,TODO,orjson,loads,complex, , , , , 
-run_11_repetition_4,TODO,orjson,loads,complex, , , , , 
-run_7_repetition_9,TODO,orjson,dumps,moderate, , , , , 
-run_11_repetition_18,TODO,orjson,loads,complex, , , , , 
+run_2_repetition_22,DONE,json,dumps,complex,378.84152359422296,99.99471458773785,0.0,18868.680397111166,14.336419048355067
+run_11_repetition_25,DONE,orjson,loads,complex,263.5065710581839,99.93545937809694,9740288.0,13596.290431563451,14.406095972831112
+run_3_repetition_19,DONE,json,loads,simple,152.92645427398384,99.89404138595022,-16384.0,7535.943268827046,14.40845614524006
+run_4_repetition_10,DONE,json,loads,moderate,287.83727909065783,99.94784422809458,-274432.0,14181.367654046713,14.440455692086957
+run_10_repetition_7,DONE,orjson,loads,moderate,146.83147605415434,99.79564032697547,0.0,7227.389578980452,14.447902127516738
+run_5_repetition_19,DONE,json,loads,complex,376.5026913192123,99.95802904379488,7098368.0,18979.40904297697,14.506058727236962
+run_6_repetition_28,DONE,orjson,dumps,simple,12.155742585659027,99.42622950819673,0.0,612.5066994145163,14.432759212551835
+run_7_repetition_14,DONE,orjson,dumps,moderate,35.19047311041504,99.51704545996405,0.0,1728.4642745150195,14.37930466173936
+run_5_repetition_1,DONE,json,loads,complex,388.8102965913713,99.96207709221636,8085504.0,19569.18416624007,14.369809084373127
+run_4_repetition_2,DONE,json,loads,moderate,289.94331100024283,99.99636522577613,0.0,14323.085897838697,14.42922200325677
+run_11_repetition_10,DONE,orjson,loads,complex,263.0112351477146,99.97596731432678,36134912.0,13609.469874810951,14.414981686525781
+run_11_repetition_4,DONE,orjson,loads,complex,263.3003454618156,99.96960486612059,42643456.0,13601.484787704045,14.424404080251426
+run_7_repetition_9,DONE,orjson,dumps,moderate,34.95579320099205,99.77142859322684,0.0,1725.0973373236484,14.312792929718727
+run_11_repetition_18,DONE,orjson,loads,complex,261.49166360870004,99.94644223558328,7057408.0,13525.460934507602,14.336564746474343
 run_5_repetition_9,TODO,json,loads,complex, , , , , 
 run_11_repetition_7,TODO,orjson,loads,complex, , , , , 
 run_9_repetition_12,TODO,orjson,loads,simple, , , , , 
