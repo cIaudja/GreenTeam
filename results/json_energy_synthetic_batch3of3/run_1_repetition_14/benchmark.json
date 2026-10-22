@@ -1,0 +1,15 @@
+{
+  "library": "json",
+  "operation": "dumps",
+  "payload_file": "/home/gl_greenteam/greenteam/data/synthetic-payloads/moderate.json",
+  "volume_bytes": 30000767220,
+  "bytes_per_op": 1030140,
+  "iterations": 29123,
+  "warmup_iterations": 292,
+  "start_time_ms": 1792611420669.8113,
+  "end_time_ms": 1792611789970.6462,
+  "execution_time_s": 369.3008318655193,
+  "maxrss_start_bytes": 15577088,
+  "maxrss_before_bytes": 21987328,
+  "maxrss_after_bytes": 21987328
+}
