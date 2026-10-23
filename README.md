@@ -1,6 +1,8 @@
 # An Empirical Analysis of the Energy Consumption in Python JSON Libraries: `json` vs `orjson`
 
 Replication package of the **Green Lab 2026/2027** team project (Vrije Universiteit Amsterdam, September–October 2026).
+This repository is a fork of [Experiment Runner](https://github.com/S2-group/experiment-runner), the tool used to run the experiment;
+its original README is in [`README-experiment-runner.md`](README-experiment-runner.md).
 
 | | |
 |---|---|
@@ -60,10 +62,13 @@ serialisation (`dumps`) and deserialisation (`loads`) in Python applications.
 Structure follows the course guidelines for replication packages (data, source code, figures, text).
 
 ```
-greenteam/
+GreenTeam/
 ├── README.md                    this file
+├── README-experiment-runner.md  original README of Experiment Runner
 ├── CITATION.cff                 citation metadata
 ├── requirements.txt             pinned Python dependency (orjson==3.12.0)
+├── main.R                       runs the whole data analysis (both blocks)
+├── experiment-runner/           Experiment Runner source code (fork of S2-group/experiment-runner, commit 56620fa)
 ├── data/
 │   ├── synthetic-payloads/      simple.json, moderate.json, complex.json (+ *_metadata.json), generator.py
 │   └── real-world-payloads/     github.json, twitter.json, citm_catalog.json, canada.json
@@ -79,15 +84,17 @@ greenteam/
 │   ├── json_energy_synthetic_batch{1,2,3}of3/   run_table.csv + one folder per run
 │   ├── json_energy_real_world_batch{1,2,3}of3/  run_table.csv + one folder per run
 │   ├── synthetic_all.csv        combined run table of the synthetic block (360 rows)
-│   ├── real_world_all.csv       combined run table of the real-world block (480 rows)
-│   └── json_energy_*_old/       earlier single-session execution; not the data reported in the paper
+│   └── real_world_all.csv       combined run table of the real-world block (480 rows)
 └── data-analysis/               R scripts and their outputs
-    ├── analysis.R               synthetic block (RQ1, RQ1.1)
+    ├── synthetic_analysis_v3.R  synthetic block (RQ1, RQ1.1)
     ├── analysis_realworld.R     real-world block (RQ2, RQ2.1–2.3, supporting comparisons)
     ├── processed/               cleaned data used by the analysis (CSV)
     ├── tables/                  result tables (CSV + LaTeX, used in the report)
     └── figures/                 final figures (PDF: box/violin/density/Q–Q/interaction/scatter plots)
 ```
+
+The other top-level folders (`documentation/`, `examples/`, `test/`, `test-standalone/`) come from Experiment Runner
+and are not needed to replicate this study.
 
 Each run folder in `results/…/run_<id>_repetition_<k>/` contains the raw measurements of that run:
 `energibridge.csv` (RAPL/CPU/memory samples every 200 ms), `idle.csv` (cool-down samples for *P*<sub>idle</sub>),
@@ -126,7 +133,7 @@ started inside `tmux`.
 |---|---|---|
 | CPython | 3.13.12 | Runs the benchmark (the C accelerator of `json` must be active) |
 | [`orjson`](https://github.com/ijl/orjson) | 3.12.0 (`requirements.txt`) | Library under study |
-| [Experiment Runner](https://github.com/S2-group/experiment-runner) | commit `56620fa` | Orchestration, randomisation, cool-downs, run table |
+| [Experiment Runner](https://github.com/S2-group/experiment-runner) | commit `56620fa` (included, this repository is a fork) | Orchestration, randomisation, cool-downs, run table |
 | [EnergiBridge](https://github.com/tdurieux/EnergiBridge) | 0.0.7 | Energy measurement (RAPL, every 200 ms) |
 
 `RunnerConfig.py` aborts if the Python or `orjson` version differs from the pinned ones, if the server is not idle
@@ -145,17 +152,16 @@ or to run the helper scripts.
 # one-time setup on the testbed
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-git clone https://github.com/S2-group/experiment-runner.git && git -C experiment-runner checkout 56620fa
-pip install -r experiment-runner/requirements.txt
+pip install pandas psutil tabulate dill jsonpickle   # dependencies of Experiment Runner (included in experiment-runner/)
 # install EnergiBridge 0.0.7 and make sure `energibridge` is on the PATH (needs access to the RAPL counters)
 
 # from the root of this repository, inside tmux
 # smoke test (4 runs, small volume, separate results folder, NOT valid data)
-DRY_RUN=1 EXPERIMENT_BLOCK=synthetic python3 experiment-runner/experiment-runner/ experiment-scripts/RunnerConfig.py
+DRY_RUN=1 EXPERIMENT_BLOCK=synthetic python3 experiment-runner/ experiment-scripts/RunnerConfig.py
 
 # full blocks, in three booking slots each (BATCH=1,2,3)
-BATCH=1 EXPERIMENT_BLOCK=synthetic  python3 experiment-runner/experiment-runner/ experiment-scripts/RunnerConfig.py
-BATCH=1 EXPERIMENT_BLOCK=real-world python3 experiment-runner/experiment-runner/ experiment-scripts/RunnerConfig.py
+BATCH=1 EXPERIMENT_BLOCK=synthetic  python3 experiment-runner/ experiment-scripts/RunnerConfig.py
+BATCH=1 EXPERIMENT_BLOCK=real-world python3 experiment-runner/ experiment-scripts/RunnerConfig.py
 ```
 
 * The run order is fixed by the pre-generated tables in `run-tables/`; `BATCH=k` executes the k-th contiguous slice
@@ -182,8 +188,7 @@ python3 experiment-scripts/combine_results.py --block real-world    # -> results
 From the root of the repository:
 
 ```bash
-Rscript data-analysis/analysis.R             # synthetic block: RQ1, RQ1.1
-Rscript data-analysis/analysis_realworld.R   # real-world block: RQ2.x + supporting comparisons
+Rscript main.R   # runs data-analysis/synthetic_analysis_v3.R (RQ1, RQ1.1) and data-analysis/analysis_realworld.R (RQ2.x)
 ```
 
 The scripts read the raw data in `results/`, write the cleaned data to `data-analysis/processed/`, the tables
@@ -217,9 +222,6 @@ The four real-world payloads are public JSON documents that are also used as fix
   benchmark process, to avoid adding work to the measured process.
 * `idle_power_W` is recorded for every run to check that the testbed is in the same state before each run; it is not
   subtracted from the energy values.
-* `results/json_energy_*_old/` contain an earlier single-session execution of the experiment (run tables and raw
-  logs). The results reported in the paper come from the batched executions (`*_batch{1,2,3}of3`, combined in
-  `*_all.csv`); the `_old` folders are kept for reference only.
 
 ## 8. Authors
 
@@ -242,6 +244,6 @@ Course: Green Lab 2026/2027, Vrije Universiteit Amsterdam.
   institution = {Vrije Universiteit Amsterdam},
   year        = {2026},
   note        = {Green Lab 2026/2027, Vrije Universiteit Amsterdam, September--October 2026},
-  url         = {https://github.com/snhballard/greenteam}
+  url         = {https://github.com/cIaudja/GreenTeam}
 }
 ```
