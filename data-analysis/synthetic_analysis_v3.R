@@ -7,12 +7,13 @@
 # MODULAR USAGE (Positron / RStudio): source this file, then call the stages
 # you need. Nothing runs on source() when the session is interactive.
 #
-#   source("data-analysis/synthetic_analysis_v3.R")
+#   source("data-analysis/synthetic_analysis_v.R")
 #   dat         <- clean_data()            # stage 1: load, clean, flag outliers (saves CSV)
 #   dat         <- load_clean()            # ...or reload the saved CSV later, skipping stage 1
 #   describe_data(dat)                     # stage 2: descriptive statistics tables
 #   plot_distributions(dat)                # stage 3: violin + per-library box plots (E and EE)
-#   plot_qq(dat)                           #          Q-Q plots
+#   plot_qq_efficency(dat)                 #          Q-Q plots for mJ/KB
+#   plot_qq_energy(dat)                    #          Q-Q plots for J
 #   # Run RQ1 and RQ1.1 independently (separate response variables and output files)
 #   assump_E <- check_assumptions(dat, response = "energy_J",
 #                                 file_prefix = "RQ1_energy")
@@ -352,17 +353,54 @@ plot_distributions <- function(dat, save = TRUE) {
   invisible(plots)
 }
 
-plot_qq <- function(dat, response = "efficiency_J_per_KB", save = TRUE) {
+plot_qq_efficency <- function(dat, response = "efficiency_J_per_KB", save = TRUE) {
+  draw <- function() {
+    par(mfrow = c(2, 6), mar = c(3, 3, 2, 1))
+
+    for (g in split(dat, list(dat$library, dat$payload, dat$operation), drop = TRUE)) {
+      # Convert from microjoules/KB to millijoules/KB
+      efficiency_mJ_per_KB <- g[[response]] / 1000
+
+      qqnorm(
+        efficiency_mJ_per_KB,
+        main = paste(g$operation[1], g$payload[1], g$library[1]),
+        cex.main = 0.8,
+        ylab = "Theoretical Quantiles",
+        xlab = "Sample Quantiles (mJ/KB)"
+      )
+      qqline(efficiency_mJ_per_KB)
+    }
+  }
+
+  if (save) {
+    setup_dirs()
+    pdf(file.path(FIG_DIR, "qqplots_efficiency_mJ_per_KB.pdf"),
+        width = 9, height = 6)
+    draw()
+    invisible(dev.off())
+  } else {
+    draw()
+  }
+}
+
+plot_qq_energy <- function(dat, response = "energy_J", save = TRUE) {
   draw <- function() {
     par(mfrow = c(2, 6), mar = c(3, 3, 2, 1))
     for (g in split(dat, list(dat$library, dat$payload, dat$operation), drop = TRUE)) {
-      qqnorm(g[[response]], main = paste(g$operation[1], g$payload[1], g$library[1]), cex.main = 0.8)
+      qqnorm(
+        g[[response]],
+        main = paste(g$operation[1], g$payload[1], g$library[1]),
+        cex.main = 0.8
+      )
       qqline(g[[response]])
     }
   }
+
   if (save) {
-    setup_dirs(); pdf(file.path(FIG_DIR, "qqplots.pdf"), width = 9, height = 6)
-    draw(); invisible(dev.off())
+    setup_dirs()
+    pdf(file.path(FIG_DIR, "qqplots_energy.pdf"), width = 9, height = 6)
+    draw()
+    invisible(dev.off())
   } else {
     draw()
   }
@@ -731,7 +769,8 @@ main <- function() {
   dat <- clean_data()
   describe_data(dat)
   plot_distributions(dat)
-  plot_qq(dat)
+  plot_qq_efficency(dat)
+  plot_qq_energy(dat)
 
   # RQ1: total energy consumption (J)
   assumptions_energy <- check_assumptions(dat,response = "energy_J",file_prefix = "RQ1_energy")
