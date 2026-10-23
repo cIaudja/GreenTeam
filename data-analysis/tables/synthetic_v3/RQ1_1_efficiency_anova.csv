@@ -1,0 +1,5 @@
+analysis,response,operation,test,transform,term,F,df1,df2,p,partial_eta2,effect_tested,p_adj,significant
+RQ1_1_efficiency,efficiency_J_per_KB,dumps,ART ANOVA,none,library,569.1813411107848,1,169,5.491705774839078e-56,0.7710589653408256,Library main effect,1.830568591613026e-55,TRUE
+RQ1_1_efficiency,efficiency_J_per_KB,dumps,ART ANOVA,none,library:payload,1767.040975252505,2,169,5.162091824715052e-114,0.9543623386522806,Library x payload interaction,5.162091824715052e-113,TRUE
+RQ1_1_efficiency,efficiency_J_per_KB,loads,ART ANOVA,none,library,496.833048482774,1,163,2.3192425728972882e-51,0.752967814548235,Library main effect,5.79810643224322e-51,TRUE
+RQ1_1_efficiency,efficiency_J_per_KB,loads,ART ANOVA,none,library:payload,636.4051418748842,2,163,9.769658969341544e-78,0.8864752524446973,Library x payload interaction,4.884829484670772e-77,TRUE

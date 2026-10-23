@@ -1,0 +1,15 @@
+{
+  "level": "moderate",
+  "seed": 42,
+  "target_size_bytes": 1048576,
+  "actual_size_bytes": 1030140,
+  "size_error_percent": -1.7581939697265625,
+  "within_5_percent": true,
+  "target_depth": 10,
+  "actual_max_depth": 10,
+  "type_counts": {
+    "integer": 8582,
+    "float": 8481,
+    "string": 8537
+  }
+}

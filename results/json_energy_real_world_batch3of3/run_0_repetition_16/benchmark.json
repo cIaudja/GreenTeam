@@ -1,0 +1,15 @@
+{
+  "library": "json",
+  "operation": "dumps",
+  "payload_file": "/home/gl_greenteam/greenteam/data/real-world-payloads/github.json",
+  "volume_bytes": 26664500000,
+  "bytes_per_op": 53329,
+  "iterations": 500000,
+  "warmup_iterations": 5000,
+  "start_time_ms": 1792430035205.843,
+  "end_time_ms": 1792430229093.076,
+  "execution_time_s": 193.88722902350128,
+  "maxrss_start_bytes": 15564800,
+  "maxrss_before_bytes": 15826944,
+  "maxrss_after_bytes": 15826944
+}

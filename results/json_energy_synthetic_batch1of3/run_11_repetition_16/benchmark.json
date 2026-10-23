@@ -1,0 +1,15 @@
+{
+  "library": "orjson",
+  "operation": "loads",
+  "payload_file": "/home/gl_greenteam/greenteam/data/synthetic-payloads/complex.json",
+  "volume_bytes": 30003006144,
+  "bytes_per_op": 10125888,
+  "iterations": 2963,
+  "warmup_iterations": 30,
+  "start_time_ms": 1792506644434.2664,
+  "end_time_ms": 1792506905496.2048,
+  "execution_time_s": 261.06193503085524,
+  "maxrss_start_bytes": 15720448,
+  "maxrss_before_bytes": 82698240,
+  "maxrss_after_bytes": 82698240
+}

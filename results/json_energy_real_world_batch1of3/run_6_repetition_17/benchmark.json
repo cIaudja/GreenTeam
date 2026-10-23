@@ -1,0 +1,15 @@
+{
+  "library": "json",
+  "operation": "loads",
+  "payload_file": "/home/gl_greenteam/greenteam/data/real-world-payloads/citm_catalog.json",
+  "volume_bytes": 31089672000,
+  "bytes_per_op": 1727204,
+  "iterations": 18000,
+  "warmup_iterations": 180,
+  "start_time_ms": 1792279526919.9155,
+  "end_time_ms": 1792279728287.7632,
+  "execution_time_s": 201.36784412525594,
+  "maxrss_start_bytes": 15560704,
+  "maxrss_before_bytes": 41795584,
+  "maxrss_after_bytes": 41795584
+}

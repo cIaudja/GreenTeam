@@ -1,0 +1,16 @@
+{
+  "level": "complex",
+  "seed": 42,
+  "target_size_bytes": 10485760,
+  "actual_size_bytes": 10125888,
+  "size_error_percent": -3.4320068359374996,
+  "within_5_percent": true,
+  "target_depth": 15,
+  "actual_max_depth": 15,
+  "type_counts": {
+    "float": 71596,
+    "integer": 72205,
+    "string": 71259,
+    "boolean": 71660
+  }
+}

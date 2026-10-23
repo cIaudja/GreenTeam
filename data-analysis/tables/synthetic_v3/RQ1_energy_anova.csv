@@ -1,0 +1,5 @@
+analysis,response,operation,test,transform,term,F,df1,df2,p,partial_eta2,effect_tested,p_adj,significant
+RQ1_energy,energy_J,dumps,ART ANOVA,none,library,568.6909549137526,1,169,5.809471152162775e-56,0.7709067748841265,Library main effect,1.9364903840542586e-55,TRUE
+RQ1_energy,energy_J,dumps,ART ANOVA,none,library:payload,1766.400151693292,2,169,5.315316935945171e-114,0.954346537860135,Library x payload interaction,5.315316935945171e-113,TRUE
+RQ1_energy,energy_J,loads,ART ANOVA,none,library,496.8007900229929,1,163,2.3285204916170408e-51,0.7529557368454806,Library main effect,5.821301229042602e-51,TRUE
+RQ1_energy,energy_J,loads,ART ANOVA,none,library:payload,637.1789010271588,2,163,8.948519061455142e-78,0.8865974778395225,Library x payload interaction,4.474259530727571e-77,TRUE

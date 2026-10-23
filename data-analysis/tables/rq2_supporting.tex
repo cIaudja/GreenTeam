@@ -1,0 +1,45 @@
+% latex table generated in R 4.6.1 by xtable 1.8-8 package
+% Tue Oct 20 15:59:47 2026
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllrrrrrlrrl}
+  \toprule
+operation & payload & measure & test & median\_json & median\_orjson & rel\_diff\_pct & p & cliffs\_delta & cliff\_magnitude & cohens\_d & p\_adj & significant \\ 
+  \midrule
+dumps & R1 & E & Welch t-test & 9579.4799 & 606.0111 & -93.6739 & 0.0000 & 1.0000 & large & 205.6209 & 0.0000 & TRUE \\ 
+  dumps & R1 & T & Welch t-test & 193.7963 & 12.2890 & -93.6588 & 0.0000 & 1.0000 & large & 269.0464 & 0.0000 & TRUE \\ 
+  dumps & R1 & CPU & Mann-Whitney U & 99.9459 & 99.5082 & -0.4379 & 0.0000 & 0.8267 & large & 1.5991 & 0.0000 & TRUE \\ 
+  dumps & R1 & RAM & Mann-Whitney U & 0.2621 & 0.1311 & -50.0000 & 0.0000 & 0.7333 & large & 2.8108 & 0.0000 & TRUE \\ 
+  dumps & R2 & E & Welch t-test & 8113.1725 & 641.6329 & -92.0915 & 0.0000 & 1.0000 & large & 270.1556 & 0.0000 & TRUE \\ 
+  dumps & R2 & T & Welch t-test & 164.1477 & 12.6625 & -92.2859 & 0.0000 & 1.0000 & large & 490.2775 & 0.0000 & TRUE \\ 
+  dumps & R2 & CPU & Mann-Whitney U & 99.9206 & 99.4152 & -0.5058 & 0.0000 & 0.9000 & large & 1.9877 & 0.0000 & TRUE \\ 
+  dumps & R2 & RAM & Mann-Whitney U & 3.8011 & 3.8011 & 0.0000 & 0.1607 & 0.0667 & negligible & 0.3716 & 0.2813 & FALSE \\ 
+  dumps & R3 & E & Mann-Whitney U & 5860.6284 & 608.1232 & -89.6236 & 0.0000 & 1.0000 & large & 56.1591 & 0.0000 & TRUE \\ 
+  dumps & R3 & T & Mann-Whitney U & 118.5837 & 12.0406 & -89.8464 & 0.0000 & 1.0000 & large & 56.5479 & 0.0000 & TRUE \\ 
+  dumps & R3 & CPU & Mann-Whitney U & 99.9356 & 99.3333 & -0.6027 & 0.0000 & 0.8856 & large & 1.5801 & 0.0000 & TRUE \\ 
+  dumps & R3 & RAM & Mann-Whitney U & 8.6508 & 8.6508 & 0.0000 & 0.0418 & 0.1333 & negligible & 0.5454 & 0.0835 & FALSE \\ 
+  dumps & R4 & E & Mann-Whitney U & 12274.9929 & 622.5043 & -94.9287 & 0.0000 & 1.0000 & large & 44.5105 & 0.0000 & TRUE \\ 
+  dumps & R4 & T & Mann-Whitney U & 248.5953 & 12.5818 & -94.9388 & 0.0000 & 1.0000 & large & 45.5377 & 0.0000 & TRUE \\ 
+  dumps & R4 & CPU & Mann-Whitney U & 99.9567 & 99.2272 & -0.7297 & 0.0000 & 1.0000 & large & 3.0738 & 0.0000 & TRUE \\ 
+  dumps & R4 & RAM & Mann-Whitney U & 15.8843 & 14.3196 & -9.8504 & 0.0000 & 1.0000 & large & 41.6472 & 0.0000 & TRUE \\ 
+  loads & R1 & E & Mann-Whitney U & 8118.8603 & 3375.6554 & -58.4221 & 0.0000 & 1.0000 & large & 60.6203 & 0.0000 & TRUE \\ 
+  loads & R1 & T & Mann-Whitney U & 164.4380 & 69.2313 & -57.8982 & 0.0000 & 1.0000 & large & 60.4677 & 0.0000 & TRUE \\ 
+  loads & R1 & CPU & Mann-Whitney U & 99.9314 & 99.8573 & -0.0742 & 0.0000 & 0.7200 & large & 1.5799 & 0.0000 & TRUE \\ 
+  loads & R1 & RAM & Mann-Whitney U & 0.1311 & 0.2621 & 100.0000 & 0.0000 & -0.7978 & large & -2.0928 & 0.0000 & TRUE \\ 
+  loads & R2 & E & Welch t-test & 12672.1827 & 3946.0305 & -68.8607 & 0.0000 & 1.0000 & large & 170.4916 & 0.0000 & TRUE \\ 
+  loads & R2 & T & Welch t-test & 256.4617 & 80.5890 & -68.5766 & 0.0000 & 1.0000 & large & 193.5255 & 0.0000 & TRUE \\ 
+  loads & R2 & CPU & Mann-Whitney U & 99.9669 & 99.8819 & -0.0850 & 0.0000 & 0.8533 & large & 1.9053 & 0.0000 & TRUE \\ 
+  loads & R2 & RAM & Mann-Whitney U & 3.9854 & 2.8938 & -27.3895 & 0.0000 & 1.0000 & large & 18.4212 & 0.0000 & TRUE \\ 
+  loads & R3 & E & Welch t-test & 9940.9889 & 4557.9614 & -54.1498 & 0.0000 & 1.0000 & large & 139.4030 & 0.0000 & TRUE \\ 
+  loads & R3 & T & Welch t-test & 201.4935 & 92.4028 & -54.1411 & 0.0000 & 1.0000 & large & 219.2485 & 0.0000 & TRUE \\ 
+  loads & R3 & CPU & Mann-Whitney U & 99.9490 & 99.9515 & 0.0025 & 0.5395 & 0.0933 & negligible & 0.5562 & 0.6866 & FALSE \\ 
+  loads & R3 & RAM & Mann-Whitney U & 26.2390 & 8.3968 & -67.9988 & 0.0000 & 1.0000 & large & 270.2594 & 0.0000 & TRUE \\ 
+  loads & R4 & E & Mann-Whitney U & 7939.5390 & 2499.0819 & -68.5236 & 0.0000 & 1.0000 & large & 91.5956 & 0.0000 & TRUE \\ 
+  loads & R4 & T & Mann-Whitney U & 160.1096 & 49.0700 & -69.3523 & 0.0000 & 1.0000 & large & 89.8892 & 0.0000 & TRUE \\ 
+  loads & R4 & CPU & Mann-Whitney U & 99.9315 & 99.8214 & -0.1102 & 0.0122 & 0.3778 & medium & 1.0323 & 0.0272 & TRUE \\ 
+  loads & R4 & RAM & Mann-Whitney U & 14.0739 & 15.7491 & 11.9034 & 0.0000 & -1.0000 & large & -5.0097 & 0.0000 & TRUE \\ 
+   \bottomrule
+\end{tabular}
+\caption{Supporting comparisons: json vs orjson on every real-world payload (BH-adjusted p-values)} 
+\label{tab:rq2_supporting}
+\end{table}

@@ -1,0 +1,13 @@
+{
+  "level": "simple",
+  "seed": 42,
+  "target_size_bytes": 10240,
+  "actual_size_bytes": 9803,
+  "size_error_percent": -4.267578125,
+  "within_5_percent": true,
+  "target_depth": 2,
+  "actual_max_depth": 2,
+  "type_counts": {
+    "string": 145
+  }
+}
