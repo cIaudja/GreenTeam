@@ -1,0 +1,49 @@
+% latex table generated in R 4.6.1 by xtable 1.8-8 package
+% Thu Oct 22 16:21:00 2026
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllrll}
+  \toprule
+operation & payload & library & shapiro\_p & transform & normal \\ 
+  \midrule
+dumps & simple & json & 0.0022 & none & FALSE \\ 
+  dumps & simple & orjson & 0.9163 & none & TRUE \\ 
+  dumps & moderate & json & 0.0000 & none & FALSE \\ 
+  dumps & moderate & orjson & 0.3197 & none & TRUE \\ 
+  dumps & complex & json & 0.0000 & none & FALSE \\ 
+  dumps & complex & orjson & 0.0960 & none & TRUE \\ 
+  loads & simple & json & 0.0476 & none & FALSE \\ 
+  loads & simple & orjson & 0.3487 & none & TRUE \\ 
+  loads & moderate & json & 0.2940 & none & TRUE \\ 
+  loads & moderate & orjson & 0.2371 & none & TRUE \\ 
+  loads & complex & json & 0.0000 & none & FALSE \\ 
+  loads & complex & orjson & 0.0056 & none & FALSE \\ 
+  dumps & simple & json & 0.0025 & log & FALSE \\ 
+  dumps & simple & orjson & 0.9085 & log & TRUE \\ 
+  dumps & moderate & json & 0.0000 & log & FALSE \\ 
+  dumps & moderate & orjson & 0.3279 & log & TRUE \\ 
+  dumps & complex & json & 0.0000 & log & FALSE \\ 
+  dumps & complex & orjson & 0.0971 & log & TRUE \\ 
+  loads & simple & json & 0.0487 & log & FALSE \\ 
+  loads & simple & orjson & 0.3498 & log & TRUE \\ 
+  loads & moderate & json & 0.3029 & log & TRUE \\ 
+  loads & moderate & orjson & 0.2226 & log & TRUE \\ 
+  loads & complex & json & 0.0000 & log & FALSE \\ 
+  loads & complex & orjson & 0.0054 & log & FALSE \\ 
+  dumps & simple & json & 0.0024 & sqrt & FALSE \\ 
+  dumps & simple & orjson & 0.9126 & sqrt & TRUE \\ 
+  dumps & moderate & json & 0.0000 & sqrt & FALSE \\ 
+  dumps & moderate & orjson & 0.3238 & sqrt & TRUE \\ 
+  dumps & complex & json & 0.0000 & sqrt & FALSE \\ 
+  dumps & complex & orjson & 0.0966 & sqrt & TRUE \\ 
+  loads & simple & json & 0.0482 & sqrt & FALSE \\ 
+  loads & simple & orjson & 0.3493 & sqrt & TRUE \\ 
+  loads & moderate & json & 0.2985 & sqrt & TRUE \\ 
+  loads & moderate & orjson & 0.2298 & sqrt & TRUE \\ 
+  loads & complex & json & 0.0000 & sqrt & FALSE \\ 
+  loads & complex & orjson & 0.0055 & sqrt & FALSE \\ 
+   \bottomrule
+\end{tabular}
+\caption{Shapiro-Wilk p-values per configuration (raw, log and sqrt)} 
+\label{tab:normality}
+\end{table}

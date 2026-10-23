@@ -1,0 +1,19 @@
+% latex table generated in R 4.6.1 by xtable 1.8-8 package
+% Thu Oct 22 19:40:02 2026
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllllrrrrrlrlrl}
+  \toprule
+analysis & response & operation & payload & test & median\_json & median\_orjson & rel\_diff\_pct & ratio\_json\_over\_orjson & p & effect\_type & effect\_size & effect\_magnitude & p\_adj & significant \\ 
+  \midrule
+RQ1\_energy & energy\_J & dumps & simple & Mann-Whitney U & 8506.1797 & 604.1116 & -92.8980 & 14.0805 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_energy & energy\_J & dumps & moderate & Mann-Whitney U & 18165.9220 & 1717.5556 & -90.5452 & 10.5766 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_energy & energy\_J & dumps & complex & Mann-Whitney U & 18756.8894 & 2364.1859 & -87.3956 & 7.9338 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_energy & energy\_J & loads & simple & Mann-Whitney U & 7489.3438 & 2525.8473 & -66.2741 & 2.9651 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_energy & energy\_J & loads & moderate & Mann-Whitney U & 14235.1087 & 7317.7385 & -48.5937 & 1.9453 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+  RQ1\_energy & energy\_J & loads & complex & Mann-Whitney U & 19104.3478 & 13546.1014 & -29.0941 & 1.4103 & 0.0000 & Cliff's delta & 1.0000 & large & 0.0000 & TRUE \\ 
+   \bottomrule
+\end{tabular}
+\caption{Pairwise json vs orjson comparisons by payload for energy consumption (J) (BH-adjusted p-values)} 
+\label{tab:RQ1_energy_pairwise}
+\end{table}
