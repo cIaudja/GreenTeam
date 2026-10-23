@@ -30,8 +30,8 @@ authors:
     given-names: Emily
     email: e.e.canas@student.vu.nl
     affiliation: "Vrije Universiteit Amsterdam"
-repository-code: "https://github.com/snhballard/greenteam.git"
-url: "https://github.com/snhballard/greenteam.git"         
+repository-code: "https://github.com/cIaudja/GreenTeam"
+url: "https://github.com/cIaudja/GreenTeam"         
 version: "1.0.0"
 date-released: "2026-10-04"                                      
 keywords:
